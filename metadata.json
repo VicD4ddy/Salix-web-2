@@ -1,0 +1,6 @@
+{
+  "name": "Scalix · Posicionamiento SEO, GEO & Google Maps",
+  "description": "Agencia de marketing digital especializada en posicionamiento en Google Maps, SEO, GEO (búsqueda con IA) y embudos de venta optimizados para convertir.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
