@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { MapPin, Search, Bot, Globe, Server, MessageSquare, Check, ArrowRight, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { MapPin, Search, Bot, Globe, Server, MessageSquare, ArrowRight, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ServiceItem } from '../types';
 
 interface ServicesSectionProps {
@@ -8,6 +9,21 @@ interface ServicesSectionProps {
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectService }) => {
   const [activeModalService, setActiveModalService] = useState<ServiceItem | null>(null);
+
+  // Close modal on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveModalService(null);
+    };
+    if (activeModalService) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [activeModalService]);
 
   const services: (ServiceItem & { icon: any; fullDetail: string })[] = [
     {
@@ -110,12 +126,18 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
   ];
 
   return (
-    <section className="py-20 bg-[#f5f2ff]/60 border-y border-[#ccc3d6]/30 relative" id="servicios">
+    <section className="py-20 bg-[#f5f2ff]/60 border-y border-[#ccc3d6]/30 relative overflow-hidden" id="servicios">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-16">
-          <span className="px-3.5 py-1.5 rounded-full bg-[#e9e6f7] text-[#420093] font-bold text-xs uppercase tracking-wider mb-4 inline-block">
+        <motion.div 
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mb-16"
+        >
+          <span className="px-3.5 py-1.5 rounded-full bg-[#e9e6f7] text-[#420093] font-bold text-xs uppercase tracking-wider mb-4 inline-block shadow-xs">
             SOLUCIONES DE CRECIMIENTO
           </span>
           <h2 className="text-display-hero-mobile md:text-headline-xl text-[#1b1a26] mt-2 mb-4 tracking-tight">
@@ -124,17 +146,22 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
           <p className="text-base md:text-xl text-[#4a4453] leading-relaxed">
             Desde los primeros puestos en mapas locales hasta la indexación para las nuevas respuestas generativas por Inteligencia Artificial.
           </p>
-        </div>
+        </motion.div>
 
         {/* Bento-style Service Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const IconComponent = service.icon;
             if (service.isDark) {
               return (
-                <div
+                <motion.div
                   key={service.id}
-                  className="bg-[#5b21b6] text-white p-8 rounded-2xl shadow-lg flex flex-col justify-between relative overflow-hidden group hover:scale-[1.01] transition-transform"
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                  className="bg-[#5b21b6] text-white p-8 rounded-2xl shadow-xl flex flex-col justify-between relative overflow-hidden group cursor-default"
                 >
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-6">
@@ -155,8 +182,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                     </p>
                   </div>
 
-                  <div>
-                    <ul className="space-y-2 border-t border-white/20 pt-4 text-xs md:text-sm text-white relative z-10 mb-6">
+                  <div className="relative z-10">
+                    <ul className="space-y-2 border-t border-white/20 pt-4 text-xs md:text-sm text-white mb-6">
                       {service.deliverables.map((item, idx) => (
                         <li key={idx} className="flex items-center gap-2">
                           <span className="text-white font-bold">✓</span>
@@ -165,26 +192,33 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                       ))}
                     </ul>
 
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveModalService(service)}
-                      className="w-full py-2.5 px-4 rounded-xl bg-white text-[#420093] hover:bg-[#fcf8ff] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                      className="w-full py-2.5 px-4 rounded-xl bg-white text-[#420093] hover:bg-[#fcf8ff] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
                     >
                       <span>Ver metodología GEO</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </motion.button>
                   </div>
-                </div>
+                </motion.div>
               );
             }
 
             return (
-              <div
+              <motion.div
                 key={service.id}
-                className="bg-white p-8 rounded-2xl border border-[#420093]/10 shadow-xs flex flex-col justify-between hover:shadow-md hover:border-[#420093]/20 transition-all group"
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="bg-white p-8 rounded-2xl border border-[#420093]/10 shadow-xs flex flex-col justify-between hover:shadow-lg hover:border-[#420093]/30 transition-all group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <span className="w-10 h-10 rounded-full bg-[#5b21b6] text-white flex items-center justify-center font-bold text-sm">
+                    <span className="w-10 h-10 rounded-full bg-[#5b21b6] text-white flex items-center justify-center font-bold text-sm shadow-xs">
                       {service.number}
                     </span>
                     <span className="px-3 py-1 rounded-full bg-[#ebddff] text-[#250059] text-xs font-semibold">
@@ -211,81 +245,109 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
                     ))}
                   </ul>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveModalService(service)}
-                    className="w-full py-2.5 px-4 rounded-xl bg-[#efecfc] hover:bg-[#e9e6f7] text-[#420093] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#efecfc] hover:bg-[#ebddff] text-[#420093] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <span>Detalles del servicio</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Service Detail Modal */}
-      {activeModalService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl border border-[#ccc3d6]/50 relative animate-in zoom-in-95 duration-200">
-            <button
+      {/* Service Detail Modal with AnimatePresence */}
+      <AnimatePresence>
+        {activeModalService && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => setActiveModalService(null)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#fcf8ff] hover:bg-[#efecfc] flex items-center justify-center text-[#1b1a26] transition-colors"
+              className="absolute inset-0 bg-black/60 backdrop-blur-xs"
+              aria-hidden="true"
+            />
+
+            {/* Modal Dialog */}
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="service-modal-title"
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 15 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              className="bg-white rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl border border-[#ccc3d6]/50 relative z-10"
             >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-3 py-1 rounded-full bg-[#ebddff] text-[#420093] text-xs font-bold uppercase">
-                {activeModalService.tag}
-              </span>
-              <span className="text-xs text-[#7b7485]">Servicio {activeModalService.number}</span>
-            </div>
-
-            <h3 className="text-2xl font-extrabold text-[#1b1a26] mb-4">
-              {activeModalService.title}
-            </h3>
-
-            <p className="text-sm md:text-base text-[#4a4453] leading-relaxed mb-6">
-              {activeModalService.fullDetail}
-            </p>
-
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#1b1a26] mb-3">
-              Entregables y acciones incluidas:
-            </h4>
-            <ul className="space-y-2.5 mb-8">
-              {activeModalService.deliverables.map((item, idx) => (
-                <li key={idx} className="flex items-center gap-2.5 text-sm text-[#1b1a26]">
-                  <span className="w-5 h-5 rounded-full bg-[#ebddff] text-[#420093] flex items-center justify-center text-xs font-bold">
-                    ✓
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => {
-                  const serviceName = activeModalService.title;
-                  setActiveModalService(null);
-                  onSelectService(serviceName);
-                }}
-                className="flex-1 py-3 px-6 rounded-full bg-[#5b21b6] hover:bg-[#420093] text-white font-bold text-sm luminescent-glow cursor-pointer transition-colors"
-              >
-                Solicitar para mi negocio
-              </button>
               <button
                 onClick={() => setActiveModalService(null)}
-                className="py-3 px-5 rounded-full bg-[#efecfc] hover:bg-[#e9e6f7] text-[#420093] font-semibold text-sm transition-colors cursor-pointer"
+                aria-label="Cerrar modal de servicio"
+                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#fcf8ff] hover:bg-[#efecfc] flex items-center justify-center text-[#1b1a26] transition-colors cursor-pointer"
               >
-                Cerrar
+                <X className="w-5 h-5" />
               </button>
-            </div>
+
+              <div className="flex items-center gap-2 mb-3">
+                <span className="px-3 py-1 rounded-full bg-[#ebddff] text-[#420093] text-xs font-bold uppercase">
+                  {activeModalService.tag}
+                </span>
+                <span className="text-xs text-[#7b7485]">Servicio {activeModalService.number}</span>
+              </div>
+
+              <h3 id="service-modal-title" className="text-2xl font-extrabold text-[#1b1a26] mb-4">
+                {activeModalService.title}
+              </h3>
+
+              <p className="text-sm md:text-base text-[#4a4453] leading-relaxed mb-6">
+                {activeModalService.fullDetail}
+              </p>
+
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#1b1a26] mb-3">
+                Entregables y acciones incluidas:
+              </h4>
+              <ul className="space-y-2.5 mb-8">
+                {activeModalService.deliverables.map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-2.5 text-sm text-[#1b1a26]">
+                    <span className="w-5 h-5 rounded-full bg-[#ebddff] text-[#420093] flex items-center justify-center text-xs font-bold">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    const serviceName = activeModalService.title;
+                    setActiveModalService(null);
+                    onSelectService(serviceName);
+                  }}
+                  className="flex-1 py-3 px-6 rounded-full bg-[#5b21b6] hover:bg-[#420093] text-white font-bold text-sm luminescent-glow cursor-pointer transition-colors"
+                >
+                  Solicitar para mi negocio
+                </motion.button>
+                <button
+                  onClick={() => setActiveModalService(null)}
+                  className="py-3 px-5 rounded-full bg-[#efecfc] hover:bg-[#e9e6f7] text-[#420093] font-semibold text-sm transition-colors cursor-pointer"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Wrench, Rocket, RefreshCw } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export const ProcessSection: React.FC = () => {
   const steps = [
@@ -34,12 +35,18 @@ export const ProcessSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 bg-[#f5f2ff]/50 border-y border-[#ccc3d6]/30" id="proceso">
+    <section className="py-20 bg-[#f5f2ff]/50 border-y border-[#ccc3d6]/30 relative overflow-hidden" id="proceso">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="px-3.5 py-1.5 rounded-full bg-[#e9e6f7] text-[#420093] font-bold text-xs uppercase tracking-wider mb-4 inline-block">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
+          <span className="px-3.5 py-1.5 rounded-full bg-[#e9e6f7] text-[#420093] font-bold text-xs uppercase tracking-wider mb-4 inline-block shadow-xs">
             CÓMO TRABAJAMOS
           </span>
           <h2 className="text-display-hero-mobile md:text-headline-xl text-[#1b1a26] tracking-tight mb-3">
@@ -48,22 +55,30 @@ export const ProcessSection: React.FC = () => {
           <p className="text-base md:text-lg text-[#4a4453]">
             Sin rodeos ni pérdidas de tiempo. Nos integramos como tu partner técnico directo.
           </p>
-        </div>
+        </motion.div>
 
         {/* 4 Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+          {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div
+              <motion.div
                 key={step.num}
-                className="bg-white p-7 rounded-2xl border border-[#ccc3d6]/30 shadow-xs relative flex flex-col justify-between hover:shadow-md hover:border-[#5b21b6]/30 transition-all group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="bg-white p-7 rounded-2xl border border-[#ccc3d6]/30 shadow-xs relative flex flex-col justify-between hover:shadow-lg hover:border-[#5b21b6]/40 transition-all group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-full bg-[#5b21b6] text-white flex items-center justify-center font-extrabold text-base shadow-xs">
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      className="w-12 h-12 rounded-full bg-[#5b21b6] text-white flex items-center justify-center font-extrabold text-base shadow-xs"
+                    >
                       {step.num}
-                    </div>
+                    </motion.div>
                     <span className="text-[11px] font-bold text-[#5b21b6] bg-[#ebddff] px-2.5 py-1 rounded-full uppercase">
                       {step.timeline}
                     </span>
@@ -80,9 +95,11 @@ export const ProcessSection: React.FC = () => {
 
                 <div className="mt-6 pt-3 border-t border-[#ccc3d6]/20 flex items-center justify-between text-xs text-[#7b7485]">
                   <span>Fase {step.num}</span>
-                  <span className="text-[#420093] font-bold">Scalix Method →</span>
+                  <span className="text-[#420093] font-bold group-hover:translate-x-1 transition-transform inline-flex items-center">
+                    Scalix Method →
+                  </span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

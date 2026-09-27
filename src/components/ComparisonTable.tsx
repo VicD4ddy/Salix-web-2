@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 interface ComparisonTableProps {
   onSelectPlanName: (planName: string) => void;
@@ -65,21 +66,33 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ onSelectPlanNa
   ];
 
   return (
-    <section className="py-20 bg-[#f5f2ff]/40 border-t border-[#ccc3d6]/30" id="comparativa">
+    <section className="py-20 bg-[#f5f2ff]/40 border-t border-[#ccc3d6]/30 overflow-hidden" id="comparativa">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto mb-14"
+        >
           <h2 className="text-display-hero-mobile md:text-headline-xl text-[#1b1a26] tracking-tight mb-3">
             Comparativa detallada de servicios
           </h2>
           <p className="text-base text-[#4a4453]">
             Todo lo que incluye cada nivel de servicio desglosado elemento por elemento.
           </p>
-        </div>
+        </motion.div>
 
         {/* Comparative Table Container */}
-        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm border border-[#ccc3d6]/30">
+        <motion.div 
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="overflow-x-auto rounded-2xl bg-white shadow-sm border border-[#ccc3d6]/30"
+        >
           <table className="w-full text-left border-collapse min-w-[640px]">
             <thead>
               <tr className="border-b border-[#ccc3d6]/30 bg-[#e9e6f7]/40">
@@ -102,7 +115,7 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ onSelectPlanNa
             </thead>
             <tbody className="divide-y divide-[#ccc3d6]/20 text-xs md:text-sm">
               {rows.map((row, idx) => (
-                <tr key={idx} className="hover:bg-[#f5f2ff]/50 transition-colors">
+                <tr key={idx} className="hover:bg-[#f5f2ff]/60 transition-colors">
                   <td className="py-4 px-6 font-medium text-[#1b1a26]">
                     <div>{row.feature}</div>
                     <span className="text-[11px] text-[#7b7485] font-normal">{row.tooltip}</span>
@@ -121,33 +134,39 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ onSelectPlanNa
               <tr className="bg-[#fcf8ff]">
                 <td className="py-5 px-6 font-bold text-xs text-[#4a4453]">¿Listo para empezar?</td>
                 <td className="py-5 px-6 text-center">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectPlanName('PLAN 1')}
                     className="text-xs font-bold px-3 py-1.5 rounded-full border border-[#420093] text-[#420093] hover:bg-[#420093] hover:text-white transition-colors cursor-pointer"
                   >
                     Elegir 49€
-                  </button>
+                  </motion.button>
                 </td>
                 <td className="py-5 px-6 text-center bg-[#ebddff]/25 border-x border-[#ccc3d6]/30">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectPlanName('PLAN 2')}
                     className="text-xs font-bold px-4 py-2 rounded-full bg-[#5b21b6] text-white hover:bg-[#420093] transition-colors luminescent-glow cursor-pointer"
                   >
                     Elegir 82€
-                  </button>
+                  </motion.button>
                 </td>
                 <td className="py-5 px-6 text-center">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectPlanName('PLAN 3')}
                     className="text-xs font-bold px-3 py-1.5 rounded-full bg-[#efecfc] text-[#420093] hover:bg-[#e9e6f7] transition-colors cursor-pointer"
                   >
                     Elegir 99€
-                  </button>
+                  </motion.button>
                 </td>
               </tr>
             </tbody>
           </table>
-        </div>
+        </motion.div>
 
       </div>
     </section>

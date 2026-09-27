@@ -25,6 +25,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
             <a href="#servicios" className="hover:text-[#420093] transition-colors hover:underline">
               Servicios
             </a>
+            <a href="#geo-simulator" className="hover:text-[#420093] transition-colors hover:underline">
+              Simulador GEO
+            </a>
+            <a href="#antes-despues" className="hover:text-[#420093] transition-colors hover:underline">
+              Antes vs Después
+            </a>
             <a href="#planes" className="hover:text-[#420093] transition-colors hover:underline">
               Planes
             </a>
@@ -54,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
 
         {/* Bottom Row: Copyright */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs md:text-sm text-[#7b7485]">
-          <p>© 2025 Scalix. Todos los derechos reservados. Especialistas en SEO, GEO y Google Maps.</p>
+          <p>© 2026 Scalix. Todos los derechos reservados. Especialistas en SEO, GEO y Google Maps.</p>
           <p className="font-medium text-[#420093]">Palma de Mallorca · España</p>
         </div>
 
